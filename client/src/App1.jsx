@@ -6,6 +6,7 @@ const App1=()=>{
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
 
+
     // Connect to the WebSocket server
     const socket = useMemo(()=>io("http://localhost:3000"), []);
 
@@ -15,11 +16,19 @@ const App1=()=>{
         setMessage("");    
        }
 
+
+  
+
    useEffect(()=>{
-  socket.on("mess",(message)=>{
+  socket.on("mess", (message)=>{
         // console.log(message);
          setMessages((e)=>[...e, message]); 
+       });
+
+       socket.on("joinRoom", (msgs) =>{
+        setMessages((e)=>[...e, msgs]); 
        })
+
    },[])
      
     
