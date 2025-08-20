@@ -20,17 +20,20 @@ const App1=()=>{
   
 
    useEffect(()=>{
+      socket.emit("joinRoom", "room1");
+
+
   socket.on("mess", (message)=>{
         // console.log(message);
          setMessages((e)=>[...e, message]); 
        });
 
-       socket.on("joinRoom", (msgs) =>{
-        setMessages((e)=>[...e, msgs]); 
+       socket.on("chatRoom", (msgs) =>{
+        setMessages((e)=>[...e, `${msgs.message}`]); 
        })
 
    },[])
-     
+
     
     return(
         <div className="container" >

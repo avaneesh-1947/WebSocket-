@@ -16,12 +16,12 @@
     // console.log("User connected", socket.id);
     socket.on("message",(message)=>
       {
-        socket.emit("mess", message);
+        io.emit("mess", message);
       })
 
       socket.on("joinRoom" , (room) => {
         socket.join(room);
-        socket.to(room).emit("chatRoom" , {user:"user1" , message: ` i ${user} joined the room ${room}` });
+        io.to(room).emit("chatRoom" , {user:"user1" , message: ` i ${socket.id} joined the room ${room}` });
       })
     
   })
