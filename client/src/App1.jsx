@@ -8,7 +8,7 @@ const App1=()=>{
 
 
     // Connect to the WebSocket server
-    const socket = useMemo(()=>io("http://localhost:3000"), []);
+    const socket = useMemo(()=>io("http://localhost:3000","https://web-socket-dhkp.vercel.app/"), []);
 
       const  handleSubmit = (event) => {
         event.preventDefault();
