@@ -5,22 +5,37 @@ import "./App1.css";
 const App1=()=>{
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
+    const [room, setRoom] = useState("");
+    const [joined, setJoined] = useState(false);
 
 
     // Connect to the WebSocket server
-    const socket = useMemo(()=>io("https://web-socket-dhkp.vercel.app"), []);
-
-      const  handleSubmit = (event) => {
+  const socket = useMemo(() => io("http://localhost:3000"), []);
+   
+    const joinedRoom = (event) => {
         event.preventDefault();
-        socket.emit("message", message); // message ko server pr send karo 
+        if (room) {
+            socket.emit("joinRoom", room); // room ko server pr send karo 
+            setJoined(true); // joined state ko true karo
+            // setRoom(""); // input field ko clear karo
+        }
+    }
+
+
+
+
+     const  handleSubmit = (event) => {
+        event.preventDefault();
+        if(joined && message) {
+        socket.emit("message",{room, message}); // message ko server pr send karo 
         setMessage("");    
        }
-
+    }
 
   
 
    useEffect(()=>{
-      socket.emit("joinRoom", "room1");
+    //   socket.emit("joinRoom", room);
 
 
   socket.on("mess", (message)=>{
@@ -38,10 +53,16 @@ const App1=()=>{
     return(
         <div className="container" >
           
+         { !joined ? ( <form  className="input-area" onSubmit={joinedRoom} >
+                <input  value={room} onChange={(e)=>setRoom(e.target.value)} type="text" placeholder="enter room name" />
+                <button type="submit"> Join</button>
+            </form>
+          ): (
             <form  className="input-area" onSubmit={handleSubmit} >
                 <input  value={message} onChange={(e)=>setMessage(e.target.value)} type="text" placeholder="enter message" />
                 <button type="submit"> send</button>
             </form>
+            )}
             
               <div className="messages">
                 {messages.map((msg, index) => (

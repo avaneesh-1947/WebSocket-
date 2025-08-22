@@ -14,14 +14,17 @@
 
   io.on("connection",(socket)=>{
     // console.log("User connected", socket.id);
-    socket.on("message",(message)=>
+    socket.on("message",({room,message})=>
       {
-        io.emit("mess", message);
+        // io.emit("mess", message);
+        if(room){
+          io.to(room).emit("mess", message);
+        }
       })
 
       socket.on("joinRoom" , (room) => {
         socket.join(room);
-        io.to(room).emit("chatRoom" , {user:"user1" , message: ` i ${socket.id} joined the room ${room}` });
+        io.to(room).emit("chatRoom" , {user:"user1" , message: ` joined the room ${room}` });
       })
     
   })
