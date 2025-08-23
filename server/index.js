@@ -3,6 +3,10 @@
   import {createServer} from "http";
   const app= express();
   const server = createServer(app);
+
+  app.get("/" ,(req , resp) => {
+     resp.send("hii");
+  })
   
   const io = new Server(server,{
     cors: {
